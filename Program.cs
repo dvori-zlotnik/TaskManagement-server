@@ -24,8 +24,8 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 }));
 var app = builder.Build();
 app.UseCors("MyPolicy");
-if (app.Environment.IsDevelopment())
-{
+// if (app.Environment.IsDevelopment())
+// {
     app.UseSwagger(options =>
 {
     options.SerializeAsV2 = true;
@@ -35,8 +35,8 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
         options.RoutePrefix = string.Empty;
     });
-}
-
+//}
+app.MapGet("/",()=>"helllllo");
 app.MapGet("/items", async (MySqlConnection db) =>
 {
     var results = await db.QueryAsync<Item>("SELECT * FROM my_data.items");
