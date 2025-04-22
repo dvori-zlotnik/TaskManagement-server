@@ -39,34 +39,35 @@ app.UseCors("MyPolicy");
 app.MapGet("/",()=>"helllllo");
 app.MapGet("/items", async (MySqlConnection db) =>
 {
-    var results = await db.QueryAsync<Item>("SELECT * FROM my_data.items");
+    System.Console.WriteLine(db.ConnectionString+"____________________________");
+    var results = await db.QueryAsync<Item>("SELECT * FROM bb0ptnvqqvjhjdloytri.Items");
     return Results.Ok(results);
 });
 
 app.MapGet("/items/{id}", async (MySqlConnection db,int id) =>
 {
-    var result = await db.QueryFirstOrDefaultAsync<Item>("SELECT * FROM my_data.items WHERE id = @id",new {id});
+    var result = await db.QueryFirstOrDefaultAsync<Item>("SELECT * FROM bb0ptnvqqvjhjdloytri.Items WHERE id = @id",new {id});
     return result!= null? Results.Ok(result) : Results.NotFound();
 });
 
 app.MapPost("/items", async (MySqlConnection db, string name) =>
 {
     System.Console.WriteLine("mmm...\n");
-    var id = await db.ExecuteScalarAsync<int>("INSERT INTO my_data.items (name) VALUES (@name)", new {name});
+    var id = await db.ExecuteScalarAsync<int>("INSERT INTO bb0ptnvqqvjhjdloytri.Items (name) VALUES (@name)", new {name});
     return Results.Created($"/items/{id}", name);
 });
 
 app.MapPut("/items/{id}", async (MySqlConnection db,int id, bool IsComplete) =>
 {
 
-    var rowsAffected = await db.ExecuteAsync("UPDATE my_data.items SET IsComplete=@IsComplete WHERE id=@Id", new{id,IsComplete});
+    var rowsAffected = await db.ExecuteAsync("UPDATE bb0ptnvqqvjhjdloytri.Items SET IsComplete=@IsComplete WHERE Id=@Id", new{id,IsComplete});
     return rowsAffected > 0? Results.NoContent() : Results.NotFound();
    
 });
 
 app.MapDelete("/items/{id}", async (MySqlConnection db,int id) =>
 {
-    var rowsAffected = await db.ExecuteAsync("DELETE FROM my_data.items WHERE id=@Id", new { id });
+    var rowsAffected = await db.ExecuteAsync("DELETE FROM bb0ptnvqqvjhjdloytri.Items WHERE Id=@Id", new { id });
     return rowsAffected > 0? Results.NoContent() : Results.NotFound();
 });
 app.Run();
