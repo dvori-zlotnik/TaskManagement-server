@@ -46,7 +46,7 @@ app.MapGet("/items", async (MySqlConnection db) =>
 
 app.MapGet("/items/{id}", async (MySqlConnection db,int id) =>
 {
-    var result = await db.QueryFirstOrDefaultAsync<Item>("SELECT * FROM bb0ptnvqqvjhjdloytri.Items WHERE id = @id",new {id});
+    var result = await db.QueryFirstOrDefaultAsync<Item>("SELECT * FROM bb0ptnvqqvjhjdloytri.Items WHERE Id = @id",new {id});
     return result!= null? Results.Ok(result) : Results.NotFound();
 });
 
@@ -60,14 +60,14 @@ app.MapPost("/items", async (MySqlConnection db, string name) =>
 app.MapPut("/items/{id}", async (MySqlConnection db,int id, bool IsComplete) =>
 {
 
-    var rowsAffected = await db.ExecuteAsync("UPDATE bb0ptnvqqvjhjdloytri.Items SET IsComplete=@IsComplete WHERE Id=@Id", new{id,IsComplete});
+    var rowsAffected = await db.ExecuteAsync("UPDATE bb0ptnvqqvjhjdloytri.Items SET IsComplete=@IsComplete WHERE Id=@id", new{id,IsComplete});
     return rowsAffected > 0? Results.NoContent() : Results.NotFound();
    
 });
 
 app.MapDelete("/items/{id}", async (MySqlConnection db,int id) =>
 {
-    var rowsAffected = await db.ExecuteAsync("DELETE FROM bb0ptnvqqvjhjdloytri.Items WHERE Id=@Id", new { id });
+    var rowsAffected = await db.ExecuteAsync("DELETE FROM bb0ptnvqqvjhjdloytri.Items WHERE Id=@id", new { id });
     return rowsAffected > 0? Results.NoContent() : Results.NotFound();
 });
 app.Run();
